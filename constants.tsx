@@ -107,7 +107,9 @@ export const POSE_LIBRARY: Record<string, Pose> = {
     armL: { x: 0.2, y: 0, z: 0.5 },
     armR: { x: 0.2, y: 0, z: 0.5 },
     legL: { x: -0.4, y: 0, z: -0.4 },
-    legR: { x: 0.6, y: 0, z: 0.1 },
+    legR: { x: 0.8, y: 0, z: 0.1 },
+    kneeL: { x: -0.3, y: 0, z: 0 },
+    kneeR: { x: -1.4, y: 0, z: 0 },
   },
   LUNGE_RIGHT: {
     name: 'LUNGE_RIGHT',
@@ -116,8 +118,10 @@ export const POSE_LIBRARY: Record<string, Pose> = {
     head: { x: 0, y: -0.15, z: 0 },
     armL: { x: 0.2, y: 0, z: -0.5 },
     armR: { x: 0.2, y: 0, z: -0.5 },
-    legL: { x: 0.6, y: 0, z: -0.1 },
+    legL: { x: 0.8, y: 0, z: -0.1 },
     legR: { x: -0.4, y: 0, z: 0.4 },
+    kneeL: { x: -1.4, y: 0, z: 0 },
+    kneeR: { x: -0.3, y: 0, z: 0 },
   },
   PUMP_IT: {
     name: 'PUMP_IT',
@@ -138,6 +142,8 @@ export const POSE_LIBRARY: Record<string, Pose> = {
     armR: { x: 0.3, y: 0, z: 0 },
     legL: { x: -1.3, y: 0, z: -0.1 },
     legR: { x: 0.15, y: 0, z: 0 },
+    kneeL: { x: 0.2, y: 0, z: 0 },
+    kneeR: { x: -0.3, y: 0, z: 0 },
   },
   KICK_RIGHT: {
     name: 'KICK_RIGHT',
@@ -148,6 +154,8 @@ export const POSE_LIBRARY: Record<string, Pose> = {
     armR: { x: 0.3, y: 0, z: 0 },
     legL: { x: 0.15, y: 0, z: 0 },
     legR: { x: -1.3, y: 0, z: 0.1 },
+    kneeL: { x: -0.3, y: 0, z: 0 },
+    kneeR: { x: 0.2, y: 0, z: 0 },
   },
   BODY_ROLL: {
     name: 'BODY_ROLL',
@@ -188,6 +196,8 @@ export const POSE_LIBRARY: Record<string, Pose> = {
     armR: { x: 0.4, y: 0, z: 0.5 },
     legL: { x: -0.5, y: 0.2, z: -0.3 },
     legR: { x: 0.4, y: -0.2, z: 0.15 },
+    kneeL: { x: -0.8, y: 0, z: 0 },
+    kneeR: { x: -0.5, y: 0, z: 0 },
   },
   RUNNING_MAN: {
     name: 'RUNNING_MAN',
@@ -198,6 +208,8 @@ export const POSE_LIBRARY: Record<string, Pose> = {
     armR: { x: 0.6, y: 0, z: 0.8 },
     legL: { x: -0.9, y: 0, z: 0 },
     legR: { x: 0.5, y: 0, z: 0 },
+    kneeL: { x: -1.2, y: 0, z: 0 },
+    kneeR: { x: -0.8, y: 0, z: 0 },
   },
   THRILLER: {
     name: 'THRILLER',
@@ -208,6 +220,8 @@ export const POSE_LIBRARY: Record<string, Pose> = {
     armR: { x: 0.5, y: -0.15, z: 0.2 },
     legL: { x: 0.1, y: 0.1, z: -0.15 },
     legR: { x: 0.1, y: -0.1, z: 0.15 },
+    kneeL: { x: -0.4, y: 0, z: 0 },
+    kneeR: { x: -0.4, y: 0, z: 0 },
   },
   CLAP_HIGH: {
     name: 'CLAP_HIGH',
@@ -261,12 +275,12 @@ export const POSE_LIBRARY: Record<string, Pose> = {
   },
   POINT_DOWN: {
     name: 'POINT_DOWN',
-    hips: { x: 0.15, y: 0, z: 0 },
-    spine: { x: 0.2, y: 0, z: 0 },
-    head: { x: 0.15, y: 0, z: 0 },
+    hips: { x: 0, y: 0, z: 0 },
+    spine: { x: -0.1, y: 0, z: 0 },
+    head: { x: -0.2, y: 0, z: 0 },
     armL: { x: 0.8, y: 0, z: 1.2 },
     armR: { x: 0.8, y: 0, z: -1.2 },
-    legL: { x: 0.2, y: 0, z: -0.1 },
-    legR: { x: 0.2, y: 0, z: 0.1 },
+    legL: { x: 0, y: 0, z: -0.1 },
+    legR: { x: 0, y: 0, z: 0.1 },
   },
 };

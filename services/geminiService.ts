@@ -7,7 +7,7 @@ const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
 export const generateChoreography = async (analysis: AudioAnalysis): Promise<ChoreographyStep[]> => {
   const poseNames = Object.keys(POSE_LIBRARY);
-  
+
   const prompt = `
     You are a professional dance choreographer creating a Just Dance style routine.
     I have a song with the following characteristics:
@@ -21,10 +21,10 @@ export const generateChoreography = async (analysis: AudioAnalysis): Promise<Cho
 
     Rules:
     1. Provide a pose change every 1-2 beats for high energy, dynamic dancing.
-    2. USE VARIETY - cycle through many different poses, don't repeat the same pose twice in a row.
+    2. USE PATTERNS - create rhythmic sequences by repeating moves (e.g., LUNGE_LEFT -> LUNGE_RIGHT -> LUNGE_LEFT -> LUNGE_RIGHT).
     3. Match energy: use dramatic poses (DAB, KICK_LEFT, KICK_RIGHT, DISCO_POINT, PUMP_IT) during high-energy moments.
-    4. Use flowing transitions: pair complementary moves (LUNGE_LEFT -> LUNGE_RIGHT, WAVE_LEFT -> WAVE_RIGHT).
-    5. Start with IDLE, then quickly build energy.
+    4. Group similar moves: do 2-4 reps of a move type (e.g. 2 side steps, 4 arm pumps) before switching to a new idea.
+    5. Don't be afraid to hold a pose for 2-4 beats for emphasis.
     6. Include signature moves like DAB, VOGUE, THRILLER, RUNNING_MAN for variety.
     7. Timestamps must be in seconds. At ${analysis.bpm} BPM, one beat = ${(60 / analysis.bpm).toFixed(3)} seconds.
     8. Generate poses for the FULL duration of the song (${analysis.duration} seconds).
