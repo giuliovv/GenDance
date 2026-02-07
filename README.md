@@ -1,6 +1,6 @@
 # GenDance
 
-GenDance is an interactive web app that turns a song into a realtime AI dance performance with a 3D mannequin.
+GenDance is like Just Dance, but with whatever song you want: an interactive web app that turns a track into a realtime AI dance performance with a 3D mannequin.
 
 Live demo: https://gen-dance.vercel.app/
 
