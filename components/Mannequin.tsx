@@ -89,6 +89,7 @@ const Mannequin: React.FC<MannequinProps> = ({
   const bodyColor = "#1a0a2e";
   const glowColor = "#ff00ff";
   const handGlowColor = "#00ffff";
+  const armColor = "#ff00aa"; // distinct bright pink for arms
 
   // Create materials with refs for animation
   const bodyMaterial = useMemo(() => {
@@ -98,6 +99,27 @@ const Mannequin: React.FC<MannequinProps> = ({
       emissiveIntensity: 0.4
     });
     bodyMaterialsRef.current.push(mat);
+    return mat;
+  }, []);
+
+  const armMaterial = useMemo(() => {
+    const mat = new THREE.MeshStandardMaterial({
+      color: armColor,
+      emissive: armColor,
+      emissiveIntensity: 1.5
+    });
+    // Add to bodyMaterialsRef so it pulses with the body beat, 
+    // or handMaterialsRef? Let's add to bodyMaterialsRef but maybe it needs its own intensity logic?
+    // The code pulses bodyMaterialsRef to 0.4-1.0. 
+    // If I add it there, it will pulse.
+    // However, armMaterial starts with intensity 1.5. 
+    // The pulse logic (lines 79-81) overwrites emissiveIntensity.
+    // It sets bodyIntensity to 0.4 + pulse * 0.6 => max 1.0.
+    // That might be too dim for the "bright" arms.
+    // Let's create a separate ref array for arms if we want them brighter.
+    // Or just use the material as is for now without pulsing, or handle pulsing separately.
+    // For simplicity, let's treat them like hands (brighter pulse).
+    handMaterialsRef.current.push(mat);
     return mat;
   }, []);
 
@@ -152,12 +174,12 @@ const Mannequin: React.FC<MannequinProps> = ({
             {/* Upper arm */}
             <mesh position={[-0.12, 0, 0]} rotation={[0, 0, Math.PI / 2]}>
               <capsuleGeometry args={[0.045, 0.18, 4, 8]} />
-              <primitive object={bodyMaterial} attach="material" />
+              <primitive object={armMaterial} attach="material" />
             </mesh>
             {/* Forearm */}
             <mesh position={[-0.32, 0, 0]} rotation={[0, 0, Math.PI / 2]}>
               <capsuleGeometry args={[0.038, 0.16, 4, 8]} />
-              <primitive object={bodyMaterial} attach="material" />
+              <primitive object={armMaterial} attach="material" />
             </mesh>
             {/* Hand - glowing orb */}
             <mesh position={[-0.48, 0, 0]}>
@@ -171,12 +193,12 @@ const Mannequin: React.FC<MannequinProps> = ({
             {/* Upper arm */}
             <mesh position={[0.12, 0, 0]} rotation={[0, 0, Math.PI / 2]}>
               <capsuleGeometry args={[0.045, 0.18, 4, 8]} />
-              <primitive object={bodyMaterial} attach="material" />
+              <primitive object={armMaterial} attach="material" />
             </mesh>
             {/* Forearm */}
             <mesh position={[0.32, 0, 0]} rotation={[0, 0, Math.PI / 2]}>
               <capsuleGeometry args={[0.038, 0.16, 4, 8]} />
-              <primitive object={bodyMaterial} attach="material" />
+              <primitive object={armMaterial} attach="material" />
             </mesh>
             {/* Hand - glowing orb */}
             <mesh position={[0.48, 0, 0]}>
@@ -224,7 +246,7 @@ const Mannequin: React.FC<MannequinProps> = ({
           </mesh>
         </group>
       </group>
-    </group>
+    </group >
   );
 };
 

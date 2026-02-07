@@ -20,11 +20,11 @@ const App: React.FC = () => {
   const handleAnalyzed = async (audioAnalysis: AudioAnalysis, file: File) => {
     setAnalysis(audioAnalysis);
     setAppState(AppState.CHOREOGRAPHING);
-    
+
     // Create audio object but don't play yet
     const url = URL.createObjectURL(file);
     audioRef.current = new Audio(url);
-    
+
     try {
       const steps = await generateChoreography(audioAnalysis);
       setChoreography(steps);
@@ -104,7 +104,7 @@ const App: React.FC = () => {
   const nextPoseName = rawNextPose;
 
   return (
-    <div className="relative w-screen h-screen flex flex-col overflow-hidden">
+    <div className="relative w-full h-[100dvh] flex flex-col overflow-hidden bg-black">
       {/* Background Stage */}
       <div className="absolute inset-0 z-0">
         <Stage
@@ -119,60 +119,60 @@ const App: React.FC = () => {
       {/* UI Overlay */}
       <div className="relative z-10 flex flex-col h-full pointer-events-none">
         {/* Header */}
-        <header className="p-6 flex justify-between items-center bg-gradient-to-b from-black/80 to-transparent">
+        <header className="p-4 md:p-6 flex justify-between items-center bg-gradient-to-b from-black/80 to-transparent">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-gradient-to-tr from-purple-600 to-pink-500 flex items-center justify-center font-bungee text-xl">G</div>
-            <h1 className="text-2xl font-bungee tracking-wider">GenDance</h1>
+            <div className="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-gradient-to-tr from-purple-600 to-pink-500 flex items-center justify-center font-bungee text-lg md:text-xl">G</div>
+            <h1 className="text-xl md:text-2xl font-bungee tracking-wider">GenDance</h1>
           </div>
           {analysis && (
             <div className="text-right">
-              <p className="text-xs text-purple-400 font-bold uppercase tracking-widest">Now Playing</p>
-              <p className="text-sm font-semibold truncate max-w-[200px]">{analysis.name}</p>
+              <p className="text-[10px] md:text-xs text-purple-400 font-bold uppercase tracking-widest">Now Playing</p>
+              <p className="text-xs md:text-sm font-semibold truncate max-w-[150px] md:max-w-[200px]">{analysis.name}</p>
             </div>
           )}
         </header>
 
         {/* Main Interaction Area */}
-        <main className="flex-1 flex flex-col items-center justify-center p-6">
+        <main className="flex-1 flex flex-col items-center justify-center p-4 md:p-6 w-full">
           {appState === AppState.IDLE && (
-            <div className="pointer-events-auto">
+            <div className="pointer-events-auto w-full max-w-md">
               <AudioAnalyzer onAnalyzed={handleAnalyzed} isAnalyzing={false} />
             </div>
           )}
 
           {(appState === AppState.ANALYZING || appState === AppState.CHOREOGRAPHING) && (
-            <div className="flex flex-col items-center gap-4 bg-black/60 p-10 rounded-3xl backdrop-blur-md border border-white/10">
+            <div className="flex flex-col items-center gap-4 bg-black/60 p-8 md:p-10 rounded-3xl backdrop-blur-md border border-white/10 w-full max-w-sm">
               <div className="w-12 h-12 border-4 border-t-purple-500 border-white/10 rounded-full animate-spin"></div>
-              <p className="font-bungee text-xl animate-pulse">
+              <p className="font-bungee text-xl animate-pulse text-center">
                 {appState === AppState.ANALYZING ? "Analyzing Rhythm..." : "Generating Moves..."}
               </p>
-              <p className="text-gray-400 text-sm">Gemini AI is choreographing your dance.</p>
+              <p className="text-gray-400 text-sm text-center">Gemini AI is choreographing your dance.</p>
             </div>
           )}
 
           {appState === AppState.READY && (
-            <div className="flex flex-col items-center gap-6 pointer-events-auto">
-              <div className="bg-black/60 p-8 rounded-3xl backdrop-blur-md border border-white/20 flex flex-col items-center text-center">
-                <h2 className="text-3xl font-bungee mb-2 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">Choreography Ready</h2>
+            <div className="flex flex-col items-center gap-6 pointer-events-auto w-full max-w-md">
+              <div className="bg-black/60 p-6 md:p-8 rounded-3xl backdrop-blur-md border border-white/20 flex flex-col items-center text-center w-full">
+                <h2 className="text-2xl md:text-3xl font-bungee mb-2 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">Choreography Ready</h2>
                 <div className="flex gap-8 my-4">
                   <div className="text-center">
-                    <p className="text-2xl font-bungee">{analysis?.bpm}</p>
+                    <p className="text-xl md:text-2xl font-bungee">{analysis?.bpm}</p>
                     <p className="text-[10px] text-gray-400 uppercase tracking-widest font-bold">BPM</p>
                   </div>
                   <div className="text-center">
-                    <p className="text-2xl font-bungee">{choreography.length}</p>
+                    <p className="text-xl md:text-2xl font-bungee">{choreography.length}</p>
                     <p className="text-[10px] text-gray-400 uppercase tracking-widest font-bold">Moves</p>
                   </div>
                 </div>
-                <button 
+                <button
                   onClick={startDance}
-                  className="mt-4 px-12 py-4 bg-white text-black font-bungee text-xl rounded-full hover:bg-purple-500 hover:text-white transition-all transform hover:scale-105 active:scale-95 shadow-[0_0_30px_rgba(255,255,255,0.3)]"
+                  className="mt-4 px-8 md:px-12 py-3 md:py-4 bg-white text-black font-bungee text-lg md:text-xl rounded-full hover:bg-purple-500 hover:text-white transition-all transform hover:scale-105 active:scale-95 shadow-[0_0_30px_rgba(255,255,255,0.3)] w-full"
                 >
                   Start Show
                 </button>
               </div>
-              <button 
-                onClick={() => setAppState(AppState.IDLE)} 
+              <button
+                onClick={() => setAppState(AppState.IDLE)}
                 className="text-gray-500 hover:text-white transition-colors text-sm underline"
               >
                 Choose different song
@@ -181,11 +181,11 @@ const App: React.FC = () => {
           )}
 
           {appState === AppState.PLAYING && (
-            <div className="absolute bottom-32 w-full px-12 flex flex-col items-center">
-              <div className="text-6xl font-bungee text-white mb-4 drop-shadow-[0_0_20px_rgba(0,255,255,0.8)] animate-bounce">
+            <div className="absolute bottom-32 md:bottom-32 w-full px-4 md:px-12 flex flex-col items-center text-center transition-all">
+              <div className="text-4xl md:text-6xl font-bungee text-white mb-2 md:mb-4 drop-shadow-[0_0_20px_rgba(0,255,255,0.8)] animate-bounce">
                 {displayPoseName}
               </div>
-              <div className="text-sm font-bold text-cyan-400 uppercase tracking-[0.5em] mb-8">
+              <div className="text-xs md:text-sm font-bold text-cyan-400 uppercase tracking-[0.5em] mb-4 md:mb-8">
                 Next: {displayNextPose}
               </div>
             </div>
@@ -193,39 +193,39 @@ const App: React.FC = () => {
         </main>
 
         {/* Footer / Controls */}
-        <footer className="p-6 bg-gradient-to-t from-black/80 to-transparent flex flex-col items-center">
+        <footer className="p-4 md:p-6 pb-8 md:pb-6 bg-gradient-to-t from-black/80 to-transparent flex flex-col items-center w-full">
           {appState === AppState.PLAYING && (
             <div className="w-full max-w-2xl flex flex-col gap-4 pointer-events-auto">
               {/* Visualizer */}
-              <div className="h-16 w-full opacity-50">
+              <div className="h-12 md:h-16 w-full opacity-50">
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={analysis?.energy.map((v, i) => ({ value: v, id: i })) || []}>
                     <Bar dataKey="value">
-                      { (analysis?.energy || []).map((entry, index) => {
-                          const progress = (currentTime / (analysis?.duration || 1));
-                          const isActive = index / 100 <= progress;
-                          return <Cell key={`cell-${index}`} fill={isActive ? '#0ff' : '#333'} />;
+                      {(analysis?.energy || []).map((entry, index) => {
+                        const progress = (currentTime / (analysis?.duration || 1));
+                        const isActive = index / 100 <= progress;
+                        return <Cell key={`cell-${index}`} fill={isActive ? '#0ff' : '#333'} />;
                       })}
                     </Bar>
                   </BarChart>
                 </ResponsiveContainer>
               </div>
-              
-              <div className="flex items-center justify-between w-full">
-                <button 
+
+              <div className="flex items-center justify-between w-full gap-4">
+                <button
                   onClick={stopDance}
-                  className="px-6 py-2 border border-white/20 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-white/10 transition-colors"
+                  className="px-4 py-2 border border-white/20 rounded-full text-[10px] md:text-xs font-bold uppercase tracking-widest hover:bg-white/10 transition-colors whitespace-nowrap"
                 >
                   Exit Dance
                 </button>
-                <div className="text-xl font-bungee text-white">
-                  {Math.floor(currentTime / 60)}:{Math.floor(currentTime % 60).toString().padStart(2, '0')}
-                </div>
-                <div className="w-24 h-1 bg-white/10 rounded-full overflow-hidden">
-                  <div 
-                    className="h-full bg-gradient-to-r from-purple-500 to-cyan-500" 
+                <div className="flex-1 mx-2 md:mx-4 h-1 bg-white/10 rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-gradient-to-r from-purple-500 to-cyan-500"
                     style={{ width: `${(currentTime / (analysis?.duration || 1)) * 100}%` }}
                   />
+                </div>
+                <div className="text-lg md:text-xl font-bungee text-white">
+                  {Math.floor(currentTime / 60)}:{Math.floor(currentTime % 60).toString().padStart(2, '0')}
                 </div>
               </div>
             </div>
