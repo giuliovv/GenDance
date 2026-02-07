@@ -14,6 +14,8 @@ export interface Pose {
   armR: JointRotation;
   legL: JointRotation;
   legR: JointRotation;
+  kneeL?: JointRotation;
+  kneeR?: JointRotation;
 }
 
 export interface ChoreographyStep {

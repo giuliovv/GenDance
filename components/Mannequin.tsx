@@ -29,6 +29,8 @@ const Mannequin: React.FC<MannequinProps> = ({
   const armRRef = useRef<THREE.Group>(null);
   const legLRef = useRef<THREE.Group>(null);
   const legRRef = useRef<THREE.Group>(null);
+  const kneeLRef = useRef<THREE.Group>(null);
+  const kneeRRef = useRef<THREE.Group>(null);
 
   // Refs for materials that will pulse
   const bodyMaterialsRef = useRef<THREE.MeshStandardMaterial[]>([]);
@@ -63,6 +65,11 @@ const Mannequin: React.FC<MannequinProps> = ({
     if (armRRef.current) armRRef.current.rotation.copy(lerpRotation(poseA.armR, poseB.armR, t));
     if (legLRef.current) legLRef.current.rotation.copy(lerpRotation(poseA.legL, poseB.legL, t));
     if (legRRef.current) legRRef.current.rotation.copy(lerpRotation(poseA.legR, poseB.legR, t));
+
+    // Knee joints with fallback to neutral
+    const neutralKnee = { x: 0, y: 0, z: 0 };
+    if (kneeLRef.current) kneeLRef.current.rotation.copy(lerpRotation(poseA.kneeL || neutralKnee, poseB.kneeL || neutralKnee, t));
+    if (kneeRRef.current) kneeRRef.current.rotation.copy(lerpRotation(poseA.kneeR || neutralKnee, poseB.kneeR || neutralKnee, t));
 
     // Beat pulse effect
     const pulse = getBeatPulse(currentTime, bpm);
@@ -215,16 +222,19 @@ const Mannequin: React.FC<MannequinProps> = ({
             <capsuleGeometry args={[0.055, 0.22, 4, 8]} />
             <primitive object={bodyMaterial} attach="material" />
           </mesh>
-          {/* Calf */}
-          <mesh position={[0, -0.48, 0]}>
-            <capsuleGeometry args={[0.045, 0.22, 4, 8]} />
-            <primitive object={bodyMaterial} attach="material" />
-          </mesh>
-          {/* Foot */}
-          <mesh position={[0, -0.72, 0.03]}>
-            <boxGeometry args={[0.07, 0.04, 0.14]} />
-            <primitive object={bodyMaterial} attach="material" />
-          </mesh>
+          {/* Knee joint - controls lower leg */}
+          <group ref={kneeLRef} position={[0, -0.35, 0]}>
+            {/* Calf */}
+            <mesh position={[0, -0.15, 0]}>
+              <capsuleGeometry args={[0.045, 0.22, 4, 8]} />
+              <primitive object={bodyMaterial} attach="material" />
+            </mesh>
+            {/* Foot */}
+            <mesh position={[0, -0.38, 0.03]}>
+              <boxGeometry args={[0.07, 0.04, 0.14]} />
+              <primitive object={bodyMaterial} attach="material" />
+            </mesh>
+          </group>
         </group>
 
         {/* Right Leg */}
@@ -234,16 +244,19 @@ const Mannequin: React.FC<MannequinProps> = ({
             <capsuleGeometry args={[0.055, 0.22, 4, 8]} />
             <primitive object={bodyMaterial} attach="material" />
           </mesh>
-          {/* Calf */}
-          <mesh position={[0, -0.48, 0]}>
-            <capsuleGeometry args={[0.045, 0.22, 4, 8]} />
-            <primitive object={bodyMaterial} attach="material" />
-          </mesh>
-          {/* Foot */}
-          <mesh position={[0, -0.72, 0.03]}>
-            <boxGeometry args={[0.07, 0.04, 0.14]} />
-            <primitive object={bodyMaterial} attach="material" />
-          </mesh>
+          {/* Knee joint - controls lower leg */}
+          <group ref={kneeRRef} position={[0, -0.35, 0]}>
+            {/* Calf */}
+            <mesh position={[0, -0.15, 0]}>
+              <capsuleGeometry args={[0.045, 0.22, 4, 8]} />
+              <primitive object={bodyMaterial} attach="material" />
+            </mesh>
+            {/* Foot */}
+            <mesh position={[0, -0.38, 0.03]}>
+              <boxGeometry args={[0.07, 0.04, 0.14]} />
+              <primitive object={bodyMaterial} attach="material" />
+            </mesh>
+          </group>
         </group>
       </group>
     </group >
