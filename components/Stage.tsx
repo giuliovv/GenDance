@@ -8,9 +8,11 @@ interface StageProps {
   currentPoseName: string;
   nextPoseName: string;
   transitionFactor: number;
+  bpm?: number;
+  currentTime?: number;
 }
 
-const Stage: React.FC<StageProps> = ({ currentPoseName, nextPoseName, transitionFactor }) => {
+const Stage: React.FC<StageProps> = ({ currentPoseName, nextPoseName, transitionFactor, bpm = 120, currentTime = 0 }) => {
   return (
     <div className="w-full h-full">
       <Canvas shadows>
@@ -26,10 +28,12 @@ const Stage: React.FC<StageProps> = ({ currentPoseName, nextPoseName, transition
           <spotLight position={[-5, 10, 5]} angle={0.3} penumbra={1} intensity={2} castShadow color="#00ffff" />
           <pointLight position={[0, 2, -2]} intensity={1} color="#ffffff" />
 
-          <Mannequin 
-            currentPoseName={currentPoseName} 
-            nextPoseName={nextPoseName} 
-            transitionFactor={transitionFactor} 
+          <Mannequin
+            currentPoseName={currentPoseName}
+            nextPoseName={nextPoseName}
+            transitionFactor={transitionFactor}
+            bpm={bpm}
+            currentTime={currentTime}
           />
 
           <Grid 

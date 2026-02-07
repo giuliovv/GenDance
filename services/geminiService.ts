@@ -9,22 +9,25 @@ export const generateChoreography = async (analysis: AudioAnalysis): Promise<Cho
   const poseNames = Object.keys(POSE_LIBRARY);
   
   const prompt = `
-    You are a professional dance choreographer.
+    You are a professional dance choreographer creating a Just Dance style routine.
     I have a song with the following characteristics:
     - Name: ${analysis.name}
     - BPM: ${analysis.bpm}
     - Duration: ${analysis.duration} seconds
     - Energy Level: ${analysis.energy.reduce((a, b) => a + b, 0) / analysis.energy.length} (out of 255)
 
-    Create a full choreography sequence using only the following allowed poses:
+    Create an energetic, varied choreography sequence using these poses:
     ${poseNames.join(', ')}
 
     Rules:
-    1. Steps must be synchronized with the BPM. 
-    2. Provide at least one pose every 2-4 beats.
-    3. The sequence should flow naturally (e.g., don't jump from SQUAT to ARMS_UP instantly).
-    4. Start with IDLE.
-    5. The timestamps should be in seconds.
+    1. Provide a pose change every 1-2 beats for high energy, dynamic dancing.
+    2. USE VARIETY - cycle through many different poses, don't repeat the same pose twice in a row.
+    3. Match energy: use dramatic poses (DAB, KICK_LEFT, KICK_RIGHT, DISCO_POINT, PUMP_IT) during high-energy moments.
+    4. Use flowing transitions: pair complementary moves (LUNGE_LEFT -> LUNGE_RIGHT, WAVE_LEFT -> WAVE_RIGHT).
+    5. Start with IDLE, then quickly build energy.
+    6. Include signature moves like DAB, VOGUE, THRILLER, RUNNING_MAN for variety.
+    7. Timestamps must be in seconds. At ${analysis.bpm} BPM, one beat = ${(60 / analysis.bpm).toFixed(3)} seconds.
+    8. Generate poses for the FULL duration of the song (${analysis.duration} seconds).
   `;
 
   const response = await ai.models.generateContent({

@@ -96,10 +96,12 @@ const App: React.FC = () => {
     <div className="relative w-screen h-screen flex flex-col overflow-hidden">
       {/* Background Stage */}
       <div className="absolute inset-0 z-0">
-        <Stage 
-          currentPoseName={currentPoseName} 
-          nextPoseName={nextPoseName} 
-          transitionFactor={transitionFactor} 
+        <Stage
+          currentPoseName={currentPoseName}
+          nextPoseName={nextPoseName}
+          transitionFactor={transitionFactor}
+          bpm={analysis?.bpm}
+          currentTime={currentTime}
         />
       </div>
 
