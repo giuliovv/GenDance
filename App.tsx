@@ -89,8 +89,19 @@ const App: React.FC = () => {
     return () => cancelAnimationFrame(requestRef.current!);
   }, [update]);
 
-  const currentPoseName = choreography[currentStepIndex]?.poseName || 'IDLE';
-  const nextPoseName = choreography[currentStepIndex + 1]?.poseName || currentPoseName;
+  // Show the pose the mannequin is actually displaying (accounts for fast transitions)
+  const rawCurrentPose = choreography[currentStepIndex]?.poseName || 'IDLE';
+  const rawNextPose = choreography[currentStepIndex + 1]?.poseName || rawCurrentPose;
+
+  // If transition is mostly complete (>0.5), show the next pose name to match what's on screen
+  const displayPoseName = transitionFactor > 0.5 ? rawNextPose : rawCurrentPose;
+  const displayNextPose = transitionFactor > 0.5
+    ? (choreography[currentStepIndex + 2]?.poseName || rawNextPose)
+    : rawNextPose;
+
+  // For the mannequin, always use raw values
+  const currentPoseName = rawCurrentPose;
+  const nextPoseName = rawNextPose;
 
   return (
     <div className="relative w-screen h-screen flex flex-col overflow-hidden">
@@ -172,10 +183,10 @@ const App: React.FC = () => {
           {appState === AppState.PLAYING && (
             <div className="absolute bottom-32 w-full px-12 flex flex-col items-center">
               <div className="text-6xl font-bungee text-white mb-4 drop-shadow-[0_0_20px_rgba(0,255,255,0.8)] animate-bounce">
-                {currentPoseName}
+                {displayPoseName}
               </div>
               <div className="text-sm font-bold text-cyan-400 uppercase tracking-[0.5em] mb-8">
-                Next: {nextPoseName}
+                Next: {displayNextPose}
               </div>
             </div>
           )}
