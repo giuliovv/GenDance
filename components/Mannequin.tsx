@@ -1,8 +1,8 @@
 
-import React, { useRef, useMemo } from 'react';
+import React, { useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
-import { Pose, JointRotation } from '../types';
+import { JointRotation } from '../types';
 import { POSE_LIBRARY } from '../constants';
 
 interface MannequinProps {
@@ -11,6 +11,7 @@ interface MannequinProps {
   transitionFactor: number;
 }
 
+// Just Dance style neon silhouette dancer
 const Mannequin: React.FC<MannequinProps> = ({ currentPoseName, nextPoseName, transitionFactor }) => {
   const hipsRef = useRef<THREE.Group>(null);
   const spineRef = useRef<THREE.Group>(null);
@@ -42,58 +43,121 @@ const Mannequin: React.FC<MannequinProps> = ({ currentPoseName, nextPoseName, tr
     if (legRRef.current) legRRef.current.rotation.copy(lerpRotation(poseA.legR, poseB.legR, t));
   });
 
+  // Neon colors
+  const bodyColor = "#1a0a2e";
+  const glowColor = "#ff00ff";
+  const handGlowColor = "#00ffff";
+
   return (
     <group position={[0, -1, 0]}>
       {/* Hips / Root */}
       <group ref={hipsRef}>
+        {/* Pelvis - wider rounded shape */}
         <mesh position={[0, 1, 0]}>
-          <boxGeometry args={[0.4, 0.2, 0.2]} />
-          <meshStandardMaterial color="#333" />
+          <sphereGeometry args={[0.18, 16, 16]} />
+          <meshStandardMaterial color={bodyColor} emissive={glowColor} emissiveIntensity={0.3} />
         </mesh>
 
-        {/* Spine */}
-        <group ref={spineRef} position={[0, 1.1, 0]}>
-          <mesh position={[0, 0.2, 0]}>
-            <boxGeometry args={[0.3, 0.4, 0.2]} />
-            <meshStandardMaterial color="#444" emissive="#00f" emissiveIntensity={0.5} />
+        {/* Spine / Torso */}
+        <group ref={spineRef} position={[0, 1.05, 0]}>
+          {/* Torso - tapered capsule shape */}
+          <mesh position={[0, 0.22, 0]}>
+            <capsuleGeometry args={[0.14, 0.35, 8, 16]} />
+            <meshStandardMaterial color={bodyColor} emissive={glowColor} emissiveIntensity={0.4} />
+          </mesh>
+
+          {/* Chest accent */}
+          <mesh position={[0, 0.35, 0.05]}>
+            <sphereGeometry args={[0.12, 16, 16]} />
+            <meshStandardMaterial color={bodyColor} emissive={glowColor} emissiveIntensity={0.5} />
+          </mesh>
+
+          {/* Neck */}
+          <mesh position={[0, 0.5, 0]}>
+            <capsuleGeometry args={[0.04, 0.08, 4, 8]} />
+            <meshStandardMaterial color={bodyColor} emissive={glowColor} emissiveIntensity={0.3} />
           </mesh>
 
           {/* Head */}
-          <mesh ref={headRef} position={[0, 0.55, 0]}>
-            <boxGeometry args={[0.2, 0.2, 0.2]} />
-            <meshStandardMaterial color="#666" emissive="#0ff" emissiveIntensity={1} />
+          <mesh ref={headRef} position={[0, 0.65, 0]}>
+            <sphereGeometry args={[0.1, 16, 16]} />
+            <meshStandardMaterial color={bodyColor} emissive={handGlowColor} emissiveIntensity={1.2} />
           </mesh>
 
           {/* Left Arm */}
-          <group ref={armLRef} position={[-0.2, 0.35, 0]}>
-            <mesh position={[-0.2, 0, 0]}>
-              <capsuleGeometry args={[0.05, 0.4, 4, 8]} />
-              <meshStandardMaterial color="#222" />
+          <group ref={armLRef} position={[-0.18, 0.38, 0]}>
+            {/* Upper arm */}
+            <mesh position={[-0.12, 0, 0]} rotation={[0, 0, Math.PI / 2]}>
+              <capsuleGeometry args={[0.045, 0.18, 4, 8]} />
+              <meshStandardMaterial color={bodyColor} emissive={glowColor} emissiveIntensity={0.4} />
+            </mesh>
+            {/* Forearm */}
+            <mesh position={[-0.32, 0, 0]} rotation={[0, 0, Math.PI / 2]}>
+              <capsuleGeometry args={[0.038, 0.16, 4, 8]} />
+              <meshStandardMaterial color={bodyColor} emissive={glowColor} emissiveIntensity={0.4} />
+            </mesh>
+            {/* Hand - glowing orb */}
+            <mesh position={[-0.48, 0, 0]}>
+              <sphereGeometry args={[0.055, 16, 16]} />
+              <meshStandardMaterial color={handGlowColor} emissive={handGlowColor} emissiveIntensity={2} />
             </mesh>
           </group>
 
           {/* Right Arm */}
-          <group ref={armRRef} position={[0.2, 0.35, 0]}>
-            <mesh position={[0.2, 0, 0]}>
-              <capsuleGeometry args={[0.05, 0.4, 4, 8]} />
-              <meshStandardMaterial color="#222" />
+          <group ref={armRRef} position={[0.18, 0.38, 0]}>
+            {/* Upper arm */}
+            <mesh position={[0.12, 0, 0]} rotation={[0, 0, Math.PI / 2]}>
+              <capsuleGeometry args={[0.045, 0.18, 4, 8]} />
+              <meshStandardMaterial color={bodyColor} emissive={glowColor} emissiveIntensity={0.4} />
+            </mesh>
+            {/* Forearm */}
+            <mesh position={[0.32, 0, 0]} rotation={[0, 0, Math.PI / 2]}>
+              <capsuleGeometry args={[0.038, 0.16, 4, 8]} />
+              <meshStandardMaterial color={bodyColor} emissive={glowColor} emissiveIntensity={0.4} />
+            </mesh>
+            {/* Hand - glowing orb */}
+            <mesh position={[0.48, 0, 0]}>
+              <sphereGeometry args={[0.055, 16, 16]} />
+              <meshStandardMaterial color={handGlowColor} emissive={handGlowColor} emissiveIntensity={2} />
             </mesh>
           </group>
         </group>
 
         {/* Left Leg */}
-        <group ref={legLRef} position={[-0.12, 0.9, 0]}>
-          <mesh position={[0, -0.4, 0]}>
-            <capsuleGeometry args={[0.06, 0.5, 4, 8]} />
-            <meshStandardMaterial color="#222" />
+        <group ref={legLRef} position={[-0.09, 0.92, 0]}>
+          {/* Thigh */}
+          <mesh position={[0, -0.18, 0]}>
+            <capsuleGeometry args={[0.055, 0.22, 4, 8]} />
+            <meshStandardMaterial color={bodyColor} emissive={glowColor} emissiveIntensity={0.35} />
+          </mesh>
+          {/* Calf */}
+          <mesh position={[0, -0.48, 0]}>
+            <capsuleGeometry args={[0.045, 0.22, 4, 8]} />
+            <meshStandardMaterial color={bodyColor} emissive={glowColor} emissiveIntensity={0.35} />
+          </mesh>
+          {/* Foot */}
+          <mesh position={[0, -0.72, 0.03]}>
+            <boxGeometry args={[0.07, 0.04, 0.14]} />
+            <meshStandardMaterial color={bodyColor} emissive={glowColor} emissiveIntensity={0.5} />
           </mesh>
         </group>
 
         {/* Right Leg */}
-        <group ref={legRRef} position={[0.12, 0.9, 0]}>
-          <mesh position={[0, -0.4, 0]}>
-            <capsuleGeometry args={[0.06, 0.5, 4, 8]} />
-            <meshStandardMaterial color="#222" />
+        <group ref={legRRef} position={[0.09, 0.92, 0]}>
+          {/* Thigh */}
+          <mesh position={[0, -0.18, 0]}>
+            <capsuleGeometry args={[0.055, 0.22, 4, 8]} />
+            <meshStandardMaterial color={bodyColor} emissive={glowColor} emissiveIntensity={0.35} />
+          </mesh>
+          {/* Calf */}
+          <mesh position={[0, -0.48, 0]}>
+            <capsuleGeometry args={[0.045, 0.22, 4, 8]} />
+            <meshStandardMaterial color={bodyColor} emissive={glowColor} emissiveIntensity={0.35} />
+          </mesh>
+          {/* Foot */}
+          <mesh position={[0, -0.72, 0.03]}>
+            <boxGeometry args={[0.07, 0.04, 0.14]} />
+            <meshStandardMaterial color={bodyColor} emissive={glowColor} emissiveIntensity={0.5} />
           </mesh>
         </group>
       </group>

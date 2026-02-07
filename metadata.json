@@ -1,7 +1,4 @@
 {
   "name": "GenDance AI",
-  "description": "A generative Just Dance experience that analyzes uploaded songs and creates synchronized 3D choreography using Gemini AI and Three.js.",
-  "requestFramePermissions": [
-    "microphone"
-  ]
+  "description": "A generative Just Dance experience that analyzes uploaded songs and creates synchronized 3D choreography using Gemini AI and Three.js."
 }
