@@ -73,8 +73,8 @@ const App: React.FC = () => {
       if (nextStep) {
         const duration = nextStep.timestamp - currentStep.timestamp;
         const elapsed = time - currentStep.timestamp;
-        // Speed multiplier: transitions complete in 40% of the duration for snappier movement
-        const speedMultiplier = 2.5;
+        // Speed multiplier: transitions complete in 20% of the duration for punchy, snappy movement
+        const speedMultiplier = 5;
         const factor = Math.min(1, Math.max(0, (elapsed / duration) * speedMultiplier));
         setTransitionFactor(factor);
       } else {
