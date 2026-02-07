@@ -12,6 +12,8 @@ export interface Pose {
   head: JointRotation;
   armL: JointRotation;
   armR: JointRotation;
+  elbowL?: JointRotation;
+  elbowR?: JointRotation;
   legL: JointRotation;
   legR: JointRotation;
   kneeL?: JointRotation;

@@ -27,6 +27,8 @@ const Mannequin: React.FC<MannequinProps> = ({
   const headRef = useRef<THREE.Mesh>(null);
   const armLRef = useRef<THREE.Group>(null);
   const armRRef = useRef<THREE.Group>(null);
+  const elbowLRef = useRef<THREE.Group>(null);
+  const elbowRRef = useRef<THREE.Group>(null);
   const legLRef = useRef<THREE.Group>(null);
   const legRRef = useRef<THREE.Group>(null);
   const kneeLRef = useRef<THREE.Group>(null);
@@ -65,6 +67,11 @@ const Mannequin: React.FC<MannequinProps> = ({
     if (armRRef.current) armRRef.current.rotation.copy(lerpRotation(poseA.armR, poseB.armR, t));
     if (legLRef.current) legLRef.current.rotation.copy(lerpRotation(poseA.legL, poseB.legL, t));
     if (legRRef.current) legRRef.current.rotation.copy(lerpRotation(poseA.legR, poseB.legR, t));
+
+    // Elbow joints with fallback to neutral
+    const neutralElbow = { x: 0, y: 0, z: 0 };
+    if (elbowLRef.current) elbowLRef.current.rotation.copy(lerpRotation(poseA.elbowL || neutralElbow, poseB.elbowL || neutralElbow, t));
+    if (elbowRRef.current) elbowRRef.current.rotation.copy(lerpRotation(poseA.elbowR || neutralElbow, poseB.elbowR || neutralElbow, t));
 
     // Knee joints with fallback to neutral
     const neutralKnee = { x: 0, y: 0, z: 0 };
@@ -183,16 +190,19 @@ const Mannequin: React.FC<MannequinProps> = ({
               <capsuleGeometry args={[0.045, 0.18, 4, 8]} />
               <primitive object={armMaterial} attach="material" />
             </mesh>
-            {/* Forearm */}
-            <mesh position={[-0.32, 0, 0]} rotation={[0, 0, Math.PI / 2]}>
-              <capsuleGeometry args={[0.038, 0.16, 4, 8]} />
-              <primitive object={armMaterial} attach="material" />
-            </mesh>
-            {/* Hand - glowing orb */}
-            <mesh position={[-0.48, 0, 0]}>
-              <sphereGeometry args={[0.055, 16, 16]} />
-              <primitive object={handMaterial} attach="material" />
-            </mesh>
+            {/* Elbow joint - controls forearm and hand */}
+            <group ref={elbowLRef} position={[-0.24, 0, 0]}>
+              {/* Forearm */}
+              <mesh position={[-0.1, 0, 0]} rotation={[0, 0, Math.PI / 2]}>
+                <capsuleGeometry args={[0.038, 0.16, 4, 8]} />
+                <primitive object={armMaterial} attach="material" />
+              </mesh>
+              {/* Hand - glowing orb */}
+              <mesh position={[-0.24, 0, 0]}>
+                <sphereGeometry args={[0.055, 16, 16]} />
+                <primitive object={handMaterial} attach="material" />
+              </mesh>
+            </group>
           </group>
 
           {/* Right Arm */}
@@ -202,16 +212,19 @@ const Mannequin: React.FC<MannequinProps> = ({
               <capsuleGeometry args={[0.045, 0.18, 4, 8]} />
               <primitive object={armMaterial} attach="material" />
             </mesh>
-            {/* Forearm */}
-            <mesh position={[0.32, 0, 0]} rotation={[0, 0, -Math.PI / 2]}>
-              <capsuleGeometry args={[0.038, 0.16, 4, 8]} />
-              <primitive object={armMaterial} attach="material" />
-            </mesh>
-            {/* Hand - glowing orb */}
-            <mesh position={[0.48, 0, 0]}>
-              <sphereGeometry args={[0.055, 16, 16]} />
-              <primitive object={handMaterial} attach="material" />
-            </mesh>
+            {/* Elbow joint - controls forearm and hand */}
+            <group ref={elbowRRef} position={[0.24, 0, 0]}>
+              {/* Forearm */}
+              <mesh position={[0.1, 0, 0]} rotation={[0, 0, -Math.PI / 2]}>
+                <capsuleGeometry args={[0.038, 0.16, 4, 8]} />
+                <primitive object={armMaterial} attach="material" />
+              </mesh>
+              {/* Hand - glowing orb */}
+              <mesh position={[0.24, 0, 0]}>
+                <sphereGeometry args={[0.055, 16, 16]} />
+                <primitive object={handMaterial} attach="material" />
+              </mesh>
+            </group>
           </group>
         </group>
 
