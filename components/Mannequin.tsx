@@ -191,12 +191,12 @@ const Mannequin: React.FC<MannequinProps> = ({
           {/* Right Arm */}
           <group ref={armRRef} position={[0.18, 0.38, 0]}>
             {/* Upper arm */}
-            <mesh position={[0.12, 0, 0]} rotation={[0, 0, Math.PI / 2]}>
+            <mesh position={[0.12, 0, 0]} rotation={[0, 0, -Math.PI / 2]}>
               <capsuleGeometry args={[0.045, 0.18, 4, 8]} />
               <primitive object={armMaterial} attach="material" />
             </mesh>
             {/* Forearm */}
-            <mesh position={[0.32, 0, 0]} rotation={[0, 0, Math.PI / 2]}>
+            <mesh position={[0.32, 0, 0]} rotation={[0, 0, -Math.PI / 2]}>
               <capsuleGeometry args={[0.038, 0.16, 4, 8]} />
               <primitive object={armMaterial} attach="material" />
             </mesh>

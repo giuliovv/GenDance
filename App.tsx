@@ -1,7 +1,7 @@
-
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Stage from './components/Stage';
 import AudioAnalyzer from './components/AudioAnalyzer';
+import HelpScreen from './components/HelpScreen';
 import { generateChoreography } from './services/geminiService';
 import { AppState, AudioAnalysis, ChoreographyStep } from './types';
 import { BarChart, Bar, ResponsiveContainer, Cell } from 'recharts';
@@ -103,6 +103,10 @@ const App: React.FC = () => {
   const currentPoseName = rawCurrentPose;
   const nextPoseName = rawNextPose;
 
+  if (appState === AppState.HELP) {
+    return <HelpScreen onBack={() => setAppState(AppState.IDLE)} />;
+  }
+
   return (
     <div className="relative w-full h-[100dvh] flex flex-col overflow-hidden bg-black">
       {/* Background Stage */}
@@ -119,17 +123,29 @@ const App: React.FC = () => {
       {/* UI Overlay */}
       <div className="relative z-10 flex flex-col h-full pointer-events-none">
         {/* Header */}
-        <header className="p-4 md:p-6 flex justify-between items-center bg-gradient-to-b from-black/80 to-transparent">
+        <header className="p-4 md:p-6 flex justify-between items-center bg-gradient-to-b from-black/80 to-transparent pointer-events-auto">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-gradient-to-tr from-purple-600 to-pink-500 flex items-center justify-center font-bungee text-lg md:text-xl">G</div>
             <h1 className="text-xl md:text-2xl font-bungee tracking-wider">GenDance</h1>
           </div>
-          {analysis && (
-            <div className="text-right">
-              <p className="text-[10px] md:text-xs text-purple-400 font-bold uppercase tracking-widest">Now Playing</p>
-              <p className="text-xs md:text-sm font-semibold truncate max-w-[150px] md:max-w-[200px]">{analysis.name}</p>
-            </div>
-          )}
+
+          <div className="flex items-center gap-4">
+            {appState === AppState.IDLE && (
+              <button
+                onClick={() => setAppState(AppState.HELP)}
+                className="text-gray-400 hover:text-white text-sm font-bold uppercase tracking-widest transition-colors"
+              >
+                Help / Poses
+              </button>
+            )}
+
+            {analysis && (
+              <div className="text-right pointer-events-none">
+                <p className="text-[10px] md:text-xs text-purple-400 font-bold uppercase tracking-widest">Now Playing</p>
+                <p className="text-xs md:text-sm font-semibold truncate max-w-[150px] md:max-w-[200px]">{analysis.name}</p>
+              </div>
+            )}
+          </div>
         </header>
 
         {/* Main Interaction Area */}
