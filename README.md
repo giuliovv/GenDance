@@ -1,20 +1,69 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# GenDance
 
-# Run and deploy your AI Studio app
+GenDance is an interactive web app that turns a song into a realtime AI dance performance with a 3D mannequin.
 
-This contains everything you need to run your app locally.
+Live demo: https://gen-dance.vercel.app/
 
-View your app in AI Studio: https://ai.studio/apps/drive/1aL0Qtir0f5hwcG5Ccb-shW154rolh-N6
+## What It Does
+
+- Upload a track (or run the built-in demo song)
+- Analyze audio rhythm and structure in the browser
+- Generate a choreography plan with Gemini
+- Render animated dance poses in a realtime 3D stage
+
+## Tech Stack
+
+- React + TypeScript
+- Vite
+- Three.js + React Three Fiber (+ Drei)
+- Recharts
+- Gemini API (`@google/genai`)
 
 ## Run Locally
 
-**Prerequisites:**  Node.js
-
+Prerequisites:
+- Node.js 18+ (recommended: latest LTS)
+- npm
 
 1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+```bash
+npm install
+```
+
+2. Create/update `.env.local`:
+```bash
+GEMINI_API_KEY=your_api_key_here
+```
+
+3. Start the dev server:
+```bash
+npm run dev
+```
+
+4. Open the local URL shown in the terminal (typically `http://localhost:5173`).
+
+## Available Scripts
+
+- `npm run dev` - start local development server
+- `npm run build` - create a production build
+- `npm run preview` - preview the production build locally
+
+## High-Level Flow
+
+1. User provides an audio file.
+2. The app extracts timing/energy cues from the track.
+3. Gemini returns a dance sequence mapped to those cues.
+4. The 3D stage plays the generated sequence in sync with audio playback.
+
+## Project Structure
+
+- `App.tsx` - app state and flow orchestration
+- `components/` - UI, stage, audio upload/analyzer, and helper screens
+- `services/geminiService.ts` - Gemini request/response handling
+- `constants.tsx` - pose definitions and shared constants
+- `types.ts` - TypeScript domain types
+
+## Notes
+
+- This project is a demo/prototype focused on interactive experience.
+- API usage requires a valid Gemini key in local environment configuration.
